@@ -1,0 +1,15 @@
+.col-lg-12.mb-4.hero-section-heding {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    h1{
+        text-align:center;
+        font-size:60px !important;
+        width: 80%;
+    }
+}
+.manager-image {
+    height: 150px;
+    width: 150px;
+}
