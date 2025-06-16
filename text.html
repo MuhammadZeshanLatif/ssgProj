@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vertical Crsl with Wheel Scroll</title>
+    <style>
+        .bdy {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+            background: #f0f0f0;
+        }
+
+        .crsl {
+            width: 80%;
+            height: 500px;
+            overflow: hidden;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            position: relative;
+            background: #fff;
+        }
+
+        .crsl-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .itm {
+            padding: 12px 20px;
+            border-bottom: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .scroll-btn {
+            position: absolute;
+            right: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #scrollUp {
+            top: 10px;
+        }
+
+        #scrollDown {
+            bottom: 10px;
+        }
+
+        .scroll-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bdy">
+        <div class="crsl" id="crsl">
+            <div class="crsl-content" id="crslContent">
+                <div class="itm">01 Asif Ahsan Ansari (General Manager SSGC-LDC)</div>
+                <div class="itm">03 Mr. Rais Ahmed (Dy. Manager LDC KT)</div>
+                <div class="itm">04 Mr. Tahseel Gul (Executive LDC KT)</div>
+                <div class="itm">05 Mr. Danish Ahmed (Manager / Incharge LDC Hyderabad)</div>
+                <div class="itm">06 Mr. Qazi Bilal uz Zaman Siddiqui (Engr. LDC Hyderabad)</div>
+                <div class="itm">07 Mr. Saddam Hussain Ansari (Assistant Manager – LDC - Hyderabad)</div>
+                <div class="itm">08 Mr. Feroz Aziz (Assistant Manager – LDC - Hyderabad)</div>
+                <div class="itm">08 Mr. Tauseef Anwar (Sr. Superintendent LDC - KT)</div>
+                <div class="itm">09 Muhammad Ameen Haider (Supervisor HP-Welder LDC - KT)</div>
+                <div class="itm">10 Muhammad Irshad (Superintendent LDC - KT)</div>
+                <div class="itm">11 Mr. Maqsood-uz-Zaman (Head Attendant LDC – KT)</div>
+                <div class="itm">12 Mr. Asad Mujeeb (Sr. Driver LDC – KT)</div>
+                <div class="itm">13 Muhammad Imran (Asst. Instrument Mechanic LDC - KT)</div>
+                <div class="itm">14 Mr. Danish Ghayas (Asst. Gas Fitter / PE LDC - KT)</div>
+                <div class="itm">15 Mr. Taimoor Ahmed (Helper LDC – KT)</div>
+                <div class="itm">16 Mr. Ali Raza (Assistant Gas Fitter LDC - Hyderabad)</div>
+                <div class="itm">17 Mr. Aleemullah (Assistant Gas Fitter LDC - Hyderabad)</div>
+                <div class="itm">18 Ms. Magzalene (Head Attendant LDC - Hyderabad)</div>
+                <div class="itm">19 Muhammad Faizanullah (Helper - Third Party - LDC - KT)</div>
+                <div class="itm">20 Muhammad Hayyat (Helper - Third Party - LDC - KT)</div>
+                <div class="itm">21 Mr. Munir Ahmed (Gardener - Third Party - LDC – KT)</div>
+                <div class="itm">22 Mr. Asif Burfat (Helper - Third Party - LDC - KT)</div>
+                <div class="itm">23 Mr. Ejaz Khan Abbasi (Helper - Third Party - LDC - KT)</div>
+                <div class="itm">24 Muhammad Yasir (Helper - Third Party - LDC - KT)</div>
+                <div class="itm">25 Mr. Abdul Sattar (Helper - Third Party - LDC - KT)</div>
+                <div class="itm">26 Mr. Shambu Mall (Helper - Third Party - LDC - KT)</div>
+                <div class="itm">27 Mr. Ghulam Rasool (Helper / Peon - Third Party - LDC - Hyderabad)</div>
+            </div>
+
+            <button class="scroll-btn" id="scrollUp">↑</button>
+            <button class="scroll-btn" id="scrollDown">↓</button>
+        </div>
+    </div>
+
+
+    <script>
+        const crsl = document.getElementById('crsl');
+        const scrollUpBtn = document.getElementById('scrollUp');
+        const scrollDownBtn = document.getElementById('scrollDown');
+        let scrollSpeed = 1;
+        let scrollInterval;
+        let autoScrollPaused = false;
+        let autoResumeTimeout;
+
+        function startScroll() {
+            scrollInterval = setInterval(() => {
+                if (!autoScrollPaused) {
+                    crsl.scrollTop += scrollSpeed;
+                    if (crsl.scrollTop + crsl.clientHeight >= crsl.scrollHeight) {
+                        crsl.scrollTop = 0;
+                    }
+                }
+            }, 30);
+        }
+
+        function stopScroll() {
+            clearInterval(scrollInterval);
+        }
+
+        function pauseAutoScroll() {
+            autoScrollPaused = true;
+            clearTimeout(autoResumeTimeout);
+            autoResumeTimeout = setTimeout(() => {
+                autoScrollPaused = false;
+            }, 3000); // resume after 3 seconds
+        }
+
+        scrollUpBtn.addEventListener('click', () => {
+            crsl.scrollTop -= 50;
+            pauseAutoScroll();
+        });
+
+        scrollDownBtn.addEventListener('click', () => {
+            crsl.scrollTop += 50;
+            pauseAutoScroll();
+        });
+
+        crsl.addEventListener('mouseenter', stopScroll);
+        crsl.addEventListener('mouseleave', startScroll);
+
+        crsl.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            crsl.scrollTop += e.deltaY > 0 ? 50 : -50;
+            pauseAutoScroll();
+        });
+
+        window.onload = startScroll;
+    </script>
+
+</body>
+
+</html>

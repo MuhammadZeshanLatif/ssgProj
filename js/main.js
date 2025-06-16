@@ -306,3 +306,55 @@ jQuery(document).ready(function($) {
   siteScroll();
 
 });
+
+ const crsl = document.getElementById('crsl');
+        const scrollUpBtn = document.getElementById('scrollUp');
+        const scrollDownBtn = document.getElementById('scrollDown');
+        let scrollSpeed = 1;
+        let scrollInterval;
+        let autoScrollPaused = false;
+        let autoResumeTimeout;
+
+        function startScroll() {
+            scrollInterval = setInterval(() => {
+                if (!autoScrollPaused) {
+                    crsl.scrollTop += scrollSpeed;
+                    if (crsl.scrollTop + crsl.clientHeight >= crsl.scrollHeight) {
+                        crsl.scrollTop = 0;
+                    }
+                }
+            }, 30);
+        }
+
+        function stopScroll() {
+            clearInterval(scrollInterval);
+        }
+
+        function pauseAutoScroll() {
+            autoScrollPaused = true;
+            clearTimeout(autoResumeTimeout);
+            autoResumeTimeout = setTimeout(() => {
+                autoScrollPaused = false;
+            }, 500);
+        }
+
+        scrollUpBtn.addEventListener('click', () => {
+            crsl.scrollTop -= 50;
+            pauseAutoScroll();
+        });
+
+        scrollDownBtn.addEventListener('click', () => {
+            crsl.scrollTop += 50;
+            pauseAutoScroll();
+        });
+
+        crsl.addEventListener('mouseenter', stopScroll);
+        crsl.addEventListener('mouseleave', startScroll);
+
+        crsl.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            crsl.scrollTop += e.deltaY > 0 ? 50 : -50;
+            pauseAutoScroll();
+        });
+
+        window.onload = startScroll;
