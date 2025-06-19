@@ -1310,42 +1310,43 @@
             <p class="mb-5">We highly value your feedback, suggestions, and complaints. Please share your thoughts to
               help us improve our services.</p>
 
-            <form method="post" data-aos="fade">
-              <div class="form-group row">
-                <div class="col-md-6 mb-3 mb-lg-0">
-                  <input type="text" class="form-control" placeholder="First name">
-                </div>
-                <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Last name">
-                </div>
-              </div>
+              <form id="contact-form" name="contact-form">
 
-              <div class="form-group row">
-                <div class="col-md-12">
-                  <input type="text" class="form-control" placeholder="Subject">
+                <div class="form-group row">
+                  <div class="col-md-6 mb-3 mb-lg-0">
+                    <input type="text" class="form-control" name="first_name" placeholder="First name" required>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" name="last_name" placeholder="Last name" required>
+                  </div>
                 </div>
-              </div>
-
-              <div class="form-group row">
-                <div class="col-md-12">
-                  <input type="email" class="form-control" placeholder="Email">
+              
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+                  </div>
                 </div>
-              </div>
-              <div class="form-group row">
-                <div class="col-md-12">
-                  <textarea class="form-control" id="" cols="30" rows="10"
-                    placeholder="Write your message here."></textarea>
+              
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <input type="email" class="form-control" name="email" placeholder="Email" required>
+                  </div>
                 </div>
-              </div>
-
-              <div class="form-group row">
-                <div class="col-md-6">
-
-                  <input type="submit" class="btn btn-primary py-3 px-5 btn-block btn-pill" value="Send Message">
+              
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <textarea class="form-control" name="message" cols="30" rows="10" placeholder="Write your message here." required></textarea>
+                  </div>
                 </div>
-              </div>
-
-            </form>
+              
+                <div class="form-group row">
+                  <div class="col-md-6">
+                    <input type="submit" class="btn btn-primary py-3 px-5 btn-block btn-pill" value="Send Message">
+                  </div>
+                </div>
+              </form>
+              
+              
           </div>
         </div>
       </div>
@@ -1451,6 +1452,31 @@
   <script src="js/main.js"></script>
 
 </body>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  window.onload = function () {
+    emailjs.init("tjZ3_w4KmAXg9LkEZ"); // your public key
+
+    document
+      .getElementById("contact-form")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        emailjs.sendForm("service_te94bzn", "template_28hbpb7", this).then(
+          function () {
+            alert("✅ Message sent successfully!");
+            document.getElementById("contact-form").reset();
+          },
+          function (error) {
+            alert("❌ Failed to send message. Please try again.");
+            console.error("EmailJS Error:", error);
+          }
+        );
+      });
+  };
+</script>
+
 
 
 
